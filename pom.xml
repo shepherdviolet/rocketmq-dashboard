@@ -94,7 +94,7 @@
         <rocketmq.version>5.3.3</rocketmq.version>
         <surefire.version>2.19.1</surefire.version>
         <aspectj.version>1.9.6</aspectj.version>
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.36</lombok.version>
         <main.basedir>${basedir}/../..</main.basedir>
         <docker.image.prefix>apacherocketmq</docker.image.prefix>
         <spring.boot.version>3.4.5</spring.boot.version>
@@ -293,6 +293,7 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
+                    <release>17</release>
                     <compilerVersion>${maven.compiler.source}</compilerVersion>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
