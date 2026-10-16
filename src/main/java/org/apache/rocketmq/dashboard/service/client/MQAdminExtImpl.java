@@ -41,27 +41,7 @@ import org.apache.rocketmq.remoting.protocol.ResponseCode;
 import org.apache.rocketmq.remoting.protocol.admin.ConsumeStats;
 import org.apache.rocketmq.remoting.protocol.admin.RollbackStats;
 import org.apache.rocketmq.remoting.protocol.admin.TopicStatsTable;
-import org.apache.rocketmq.remoting.protocol.body.AclInfo;
-import org.apache.rocketmq.remoting.protocol.body.BrokerMemberGroup;
-import org.apache.rocketmq.remoting.protocol.body.BrokerReplicasInfo;
-import org.apache.rocketmq.remoting.protocol.body.BrokerStatsData;
-import org.apache.rocketmq.remoting.protocol.body.ClusterInfo;
-import org.apache.rocketmq.remoting.protocol.body.ConsumeMessageDirectlyResult;
-import org.apache.rocketmq.remoting.protocol.body.ConsumeStatsList;
-import org.apache.rocketmq.remoting.protocol.body.ConsumerConnection;
-import org.apache.rocketmq.remoting.protocol.body.ConsumerRunningInfo;
-import org.apache.rocketmq.remoting.protocol.body.EpochEntryCache;
-import org.apache.rocketmq.remoting.protocol.body.GroupList;
-import org.apache.rocketmq.remoting.protocol.body.HARuntimeInfo;
-import org.apache.rocketmq.remoting.protocol.body.KVTable;
-import org.apache.rocketmq.remoting.protocol.body.ProducerConnection;
-import org.apache.rocketmq.remoting.protocol.body.ProducerTableInfo;
-import org.apache.rocketmq.remoting.protocol.body.QueryConsumeQueueResponseBody;
-import org.apache.rocketmq.remoting.protocol.body.QueueTimeSpan;
-import org.apache.rocketmq.remoting.protocol.body.SubscriptionGroupWrapper;
-import org.apache.rocketmq.remoting.protocol.body.TopicConfigSerializeWrapper;
-import org.apache.rocketmq.remoting.protocol.body.TopicList;
-import org.apache.rocketmq.remoting.protocol.body.UserInfo;
+import org.apache.rocketmq.remoting.protocol.body.*;
 import org.apache.rocketmq.remoting.protocol.header.ExportRocksDBConfigToJsonRequestHeader;
 import org.apache.rocketmq.remoting.protocol.header.GetTopicConfigRequestHeader;
 import org.apache.rocketmq.remoting.protocol.header.controller.ElectMasterResponseHeader;
@@ -538,19 +518,31 @@ public class MQAdminExtImpl implements MQAdminExt {
     @Override
     public SubscriptionGroupWrapper getAllSubscriptionGroup(String brokerAddr,
                                                             long timeoutMillis) throws InterruptedException, RemotingTimeoutException, RemotingSendRequestException, RemotingConnectException, MQBrokerException {
-        return MQAdminInstance.threadLocalMQAdminExt().getAllSubscriptionGroup(brokerAddr, timeoutMillis);
+        try {
+            return MQAdminInstance.threadLocalMQAdminExt().getAllSubscriptionGroup(brokerAddr, timeoutMillis);
+        } catch (RemotingCommandException e) {
+            throw new RemotingConnectException(e.getMessage(), e);
+        }
     }
 
     @Override
     public SubscriptionGroupWrapper getUserSubscriptionGroup(String brokerAddr,
                                                              long timeoutMillis) throws InterruptedException, RemotingTimeoutException, RemotingSendRequestException, RemotingConnectException, MQBrokerException {
-        return MQAdminInstance.threadLocalMQAdminExt().getUserSubscriptionGroup(brokerAddr, timeoutMillis);
+        try {
+            return MQAdminInstance.threadLocalMQAdminExt().getUserSubscriptionGroup(brokerAddr, timeoutMillis);
+        } catch (RemotingCommandException e) {
+            throw new RemotingConnectException(e.getMessage(), e);
+        }
     }
 
     @Override
     public TopicConfigSerializeWrapper getAllTopicConfig(String brokerAddr,
                                                          long timeoutMillis) throws InterruptedException, RemotingTimeoutException, RemotingSendRequestException, RemotingConnectException, MQBrokerException {
-        return MQAdminInstance.threadLocalMQAdminExt().getAllTopicConfig(brokerAddr, timeoutMillis);
+        try {
+            return MQAdminInstance.threadLocalMQAdminExt().getAllTopicConfig(brokerAddr, timeoutMillis);
+        } catch (RemotingCommandException e) {
+            throw new RemotingConnectException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -960,5 +952,42 @@ public class MQAdminExtImpl implements MQAdminExt {
     public void exportPopRecords(String brokerAddr, long timeout) throws RemotingConnectException,
             RemotingSendRequestException, RemotingTimeoutException, MQBrokerException, InterruptedException {
         MQAdminInstance.threadLocalMQAdminExt().exportPopRecords(brokerAddr, timeout);
+    }
+
+    // 以下新增API一律空实现
+
+    @Override
+    public void switchTimerEngine(String s, String s1) throws RemotingConnectException, RemotingSendRequestException, RemotingTimeoutException, UnsupportedEncodingException, InterruptedException, MQBrokerException {
+
+    }
+
+    @Override
+    public GetBrokerLiteInfoResponseBody getBrokerLiteInfo(String s) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
+        return null;
+    }
+
+    @Override
+    public GetParentTopicInfoResponseBody getParentTopicInfo(String s, String s1) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
+        return null;
+    }
+
+    @Override
+    public GetLiteTopicInfoResponseBody getLiteTopicInfo(String s, String s1, String s2) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
+        return null;
+    }
+
+    @Override
+    public GetLiteClientInfoResponseBody getLiteClientInfo(String s, String s1, String s2, String s3) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
+        return null;
+    }
+
+    @Override
+    public GetLiteGroupInfoResponseBody getLiteGroupInfo(String s, String s1, String s2, int i) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
+        return null;
+    }
+
+    @Override
+    public void triggerLiteDispatch(String s, String s1, String s2) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
+
     }
 }

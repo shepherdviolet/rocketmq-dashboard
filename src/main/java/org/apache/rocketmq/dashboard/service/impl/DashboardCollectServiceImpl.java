@@ -16,8 +16,8 @@
  */
 package org.apache.rocketmq.dashboard.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.base.Ticker;
